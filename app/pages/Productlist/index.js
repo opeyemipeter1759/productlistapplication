@@ -6,8 +6,9 @@ import axios from 'axios';
 const Productlist = () =>
 {
     const [products, setProduct] = useState( [] );
-    const [searchTerm, setSearchTerm] = useState( "" )
-    const [filteredProducts, setFilteredProducts] = useState( [] )
+    const [searchTerm, setSearchTerm] = useState( "" );
+    const [filteredProducts, setFilteredProducts] = useState( [] );
+    const [sortOrder, setSortOrder] = useState( '' );
 
     useEffect( () =>
     {
@@ -31,6 +32,21 @@ const Productlist = () =>
 
         setFilteredProducts( filteredProducts );
     }
+    const handleSort = ( e ) =>
+    {
+        setSortOrder( e.target.value );
+    };
+    const sortedProducts = [...filteredProducts].sort( ( a, b ) =>
+    {
+        if ( sortOrder === 'asc' )
+        {
+            return a.price - b.price;
+        } else if ( sortOrder === 'desc' )
+        {
+            return b.price - a.price;
+        }
+        return 0;
+    } );
 
 
 
@@ -39,9 +55,16 @@ const Productlist = () =>
             <h1>
                 Product List
             </h1>
+            <div className="">
             <input type="text" placeholder="search product" value={searchTerm} onChange={handleSearch} />
+                <select value={sortOrder} onChange={handleSort}>
+                    <option value="">Sort by Price</option>
+                    <option value="asc">Low to High</option>
+                    <option value="desc">High to Low</option>
+                </select>
+            </div>
             <ul>
-                {filteredProducts.map( ( product ) => (
+                {sortedProducts.map( ( product ) => (
                     <li key={product.id}>
                         <h3>
                             {product.title}
