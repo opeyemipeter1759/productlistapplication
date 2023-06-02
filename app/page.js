@@ -1,4 +1,5 @@
 import React from "react";
+import Productlist from "./pages/Productlist";
 
 const Home = () =>
 {
@@ -7,6 +8,7 @@ const Home = () =>
             <h1>
                 Welcome to my productList page
             </h1>
+            <Productlist/>
         </div>
     )
 }
