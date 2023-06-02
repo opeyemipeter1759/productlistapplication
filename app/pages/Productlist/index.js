@@ -9,6 +9,7 @@ const Productlist = () =>
     const [searchTerm, setSearchTerm] = useState( "" );
     const [filteredProducts, setFilteredProducts] = useState( [] );
     const [sortOrder, setSortOrder] = useState( '' );
+    const [isLoading, setIsLoading] = useState( true );
 
     useEffect( () =>
     {
@@ -16,12 +17,23 @@ const Productlist = () =>
             .then( response =>
             {
                 setProduct( response.data )
+                setFilteredProducts( response.data )
+                setIsLoading(false)
             } )
             .catch( error =>
             {
                 console.error( error )
+                setIsLoading(false)
             } )
     }, [] )
+
+    useEffect( () =>
+    {
+        const updatedProducts = products.filter( product =>
+            product.title.toLowerCase().includes( searchTerm.toLowerCase() )
+        );
+        setFilteredProducts( updatedProducts );
+    }, [products, searchTerm] );
 
     const handleSearch = ( e ) =>
     {
@@ -48,6 +60,10 @@ const Productlist = () =>
         return 0;
     } );
 
+    if ( isLoading )
+    {
+        return <p>Loading...</p>;
+    }
 
 
     return (
