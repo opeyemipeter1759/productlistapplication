@@ -3,95 +3,129 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Productlist = () =>
+const ProductList = () =>
 {
-    const [products, setProduct] = useState( [] );
-    const [searchTerm, setSearchTerm] = useState( "" );
+    const [products, setProducts] = useState( [] );
+    const [searchTerm, setSearchTerm] = useState( '' );
     const [filteredProducts, setFilteredProducts] = useState( [] );
+    const [currentPage, setCurrentPage] = useState( 1 );
+    const [itemsPerPage] = useState( 10 );
     const [sortOrder, setSortOrder] = useState( '' );
     const [isLoading, setIsLoading] = useState( true );
 
     useEffect( () =>
     {
-        axios.get( 'https://fakestoreapi.com/products' )
-            .then( response =>
+        const fetchData = async () =>
+        {
+            setIsLoading( true );
+            try
             {
-                setProduct( response.data )
-                setFilteredProducts( response.data )
-                setIsLoading(false)
-            } )
-            .catch( error =>
+                const response = await axios.get( 'https://fakestoreapi.com/products' );
+                setProducts( response.data );
+                setIsLoading( false );
+            } catch ( error )
             {
-                console.error( error )
-                setIsLoading(false)
-            } )
-    }, [] )
+                console.error( error );
+                setIsLoading( false );
+            }
+        };
+
+        fetchData();
+    }, [] );
 
     useEffect( () =>
     {
-        const updatedProducts = products.filter( product =>
+        const filtered = products.filter( ( product ) =>
             product.title.toLowerCase().includes( searchTerm.toLowerCase() )
         );
-        setFilteredProducts( updatedProducts );
+        setFilteredProducts( filtered );
+        setCurrentPage( 1 );
     }, [products, searchTerm] );
 
-    const handleSearch = ( e ) =>
+    useEffect( () =>
     {
-        const searchTerm = e.target.value
-        setSearchTerm( searchTerm )
+        const sorted = [...filteredProducts].sort( ( a, b ) =>
+        {
+            if ( sortOrder === 'asc' )
+            {
+                return a.price - b.price;
+            } else if ( sortOrder === 'desc' )
+            {
+                return b.price - a.price;
+            }
+            return 0;
+        } );
+        setFilteredProducts( sorted );
+        setCurrentPage( 1 );
+    }, [sortOrder] );
 
-        const filteredProducts = products.filter( product => product.title.toLowerCase().includes( searchTerm.toLowerCase() ) )
-
-        setFilteredProducts( filteredProducts );
-    }
-    const handleSort = ( e ) =>
+    const handleSearch = ( event ) =>
     {
-        setSortOrder( e.target.value );
+        setSearchTerm( event.target.value );
     };
-    const sortedProducts = [...filteredProducts].sort( ( a, b ) =>
-    {
-        if ( sortOrder === 'asc' )
-        {
-            return a.price - b.price;
-        } else if ( sortOrder === 'desc' )
-        {
-            return b.price - a.price;
-        }
-        return 0;
-    } );
 
-    if ( isLoading )
+    const handleSort = ( event ) =>
     {
-        return <p>Loading...</p>;
-    }
+        setSortOrder( event.target.value );
+    };
 
+    const handlePageChange = ( page ) =>
+    {
+        setCurrentPage( page );
+    };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredProducts.slice( indexOfFirstItem, indexOfLastItem );
 
     return (
         <div>
-            <h1>
-                Product List
-            </h1>
-            <div className="">
-            <input type="text" placeholder="search product" value={searchTerm} onChange={handleSearch} />
+            <h1>Product List</h1>
+            <div>
+                <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={handleSearch}
+                />
                 <select value={sortOrder} onChange={handleSort}>
                     <option value="">Sort by Price</option>
                     <option value="asc">Low to High</option>
                     <option value="desc">High to Low</option>
                 </select>
             </div>
-            <ul>
-                {sortedProducts.map( ( product ) => (
-                    <li key={product.id}>
-                        <h3>
-                            {product.title}
-                        </h3>
-                        <p>Price : ${product.price}</p>
-                        <img src={product.image} alt={product.title} />
-                    </li>
-                ) )}
-            </ul>
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : (
+                <div>
+                    <ul>
+                        {currentItems.map( ( product ) => (
+                            <li key={product.id}>
+                                <h3>{product.title}</h3>
+                                <p>Price: ${product.price}</p>
+                                <img src={product.image} alt={product.title} />
+                            </li>
+                        ) )}
+                    </ul>
+                    <div>
+                        <button
+                            disabled={currentPage === 1}
+                            onClick={() => handlePageChange( currentPage - 1 )}
+                        >
+                            Previous
+                        </button>
+                        <span>{currentPage}</span>
+                        <button
+                            disabled={currentPage === Math.ceil( filteredProducts.length / itemsPerPage )}
+                            onClick={() => handlePageChange( currentPage + 1 )}
+                        >
+                            Next
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
-    )
-}
+    );
+};
 
-export default Productlist
+export default ProductList;
