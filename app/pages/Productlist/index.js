@@ -9,9 +9,11 @@ const ProductList = () =>
     const [searchTerm, setSearchTerm] = useState( '' );
     const [filteredProducts, setFilteredProducts] = useState( [] );
     const [currentPage, setCurrentPage] = useState( 1 );
-    const [itemsPerPage] = useState( 10 );
+    const [itemsPerPage] = useState( 20 );
     const [sortOrder, setSortOrder] = useState( '' );
     const [isLoading, setIsLoading] = useState( true );
+    const [cartItems, setCartItems] = useState( [] );
+    const [isAddingToCart, setIsAddingToCart] = useState( {} );
 
     useEffect( () =>
     {
@@ -74,9 +76,35 @@ const ProductList = () =>
         setCurrentPage( page );
     };
 
+    const handleAddToCart = async ( product ) =>
+    {
+        setIsAddingToCart( ( prevState ) => ( {
+            ...prevState,
+            [product.id]: true
+        } ) );
+
+        try
+        {
+            // Simulating an asynchronous API call
+            await new Promise( ( resolve ) => setTimeout( resolve, 1000 ) );
+
+            setCartItems( ( prevCartItems ) => [...prevCartItems, product] );
+        } catch ( error )
+        {
+            console.error( error );
+        }
+
+        setIsAddingToCart( ( prevState ) => ( {
+            ...prevState,
+            [product.id]: false
+        } ) );
+    };
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredProducts.slice( indexOfFirstItem, indexOfLastItem );
+
+    const cartItemCount = cartItems.length;
+    const cartTotalPrice = cartItems.reduce( ( total, item ) => total + item.price, 0 );
 
     return (
         <div>
@@ -104,19 +132,25 @@ const ProductList = () =>
                                 <h3>{product.title}</h3>
                                 <p>Price: ${product.price}</p>
                                 <img src={product.image} alt={product.title} />
+                                <button
+                                    onClick={() => handleAddToCart( product )}
+                                    disabled={isAddingToCart[product.id]}
+                                >
+                                    {isAddingToCart[product.id] ? 'Adding to Cart...' : 'Add to Cart'}
+                                </button>
                             </li>
                         ) )}
                     </ul>
                     <div>
                         <button
-                            disabled={currentPage === 1}
+                            disabled={currentPage === Math.ceil( filteredProducts.length / itemsPerPage )}
                             onClick={() => handlePageChange( currentPage - 1 )}
                         >
                             Previous
                         </button>
                         <span>{currentPage}</span>
                         <button
-                            disabled={currentPage === Math.ceil( filteredProducts.length / itemsPerPage )}
+                            disabled={indexOfLastItem >= filteredProducts.length}
                             onClick={() => handlePageChange( currentPage + 1 )}
                         >
                             Next
@@ -124,6 +158,17 @@ const ProductList = () =>
                     </div>
                 </div>
             )}
+            <h2>Shopping Cart</h2>
+            <p>Total Items: {cartItemCount}</p>
+            <p>Total Price: ${cartTotalPrice.toFixed( 2 )}</p>
+            <ul>
+                {cartItems.map( ( item ) => (
+                    <li key={item.id}>
+                        <h3>{item.title}</h3>
+                        <p>Price: ${item.price}</p>
+                    </li>
+                ) )}
+            </ul>
         </div>
     );
 };
