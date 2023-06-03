@@ -4,11 +4,11 @@ import Productlist from "./product-list";
 const Home = () =>
 {
     return (
-        <div className="container">
+        <div className="container mx-auto">
             <h1>
                 Welcome to my productList page
             </h1>
-            <Productlist/>
+            <Productlist/>  
         </div>
     )
 }
