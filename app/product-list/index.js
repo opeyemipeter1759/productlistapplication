@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Product from './partials/product';
 
 const ProductList = () =>
 {
@@ -107,8 +108,9 @@ const ProductList = () =>
     const cartTotalPrice = cartItems.reduce( ( total, item ) => total + item.price, 0 );
 
     return (
-        <div>
+        <div >
             <h1>Product List</h1>
+            <Product />
             <div>
                 <input
                     type="text"
@@ -125,19 +127,24 @@ const ProductList = () =>
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
-                <div>
-                    <ul>
+                <div >
+
+
+                    <ul className="row">
                         {currentItems.map( ( product ) => (
-                            <li key={product.id}>
-                                <h3>{product.title}</h3>
-                                <p>Price: ${product.price}</p>
-                                <img src={product.image} alt={product.title} />
-                                <button
-                                    onClick={() => handleAddToCart( product )}
-                                    disabled={isAddingToCart[product.id]}
-                                >
-                                    {isAddingToCart[product.id] ? 'Adding to Cart...' : 'Add to Cart'}
-                                </button>
+                            <li className="col-lg-4  col-md-6 col-sm-12  my-4 list-unstyled card border-0" key={product.id}  >
+                                    <img className="card-img-top img-fluid" src={product.image} alt={product.title} />
+                                        <div className="card-body">
+                                            <p className="fs-5">{product.title}</p>
+                                    <p >Price: ${product.price}</p>
+                                    <button className="btn btn-secondary btn-lg"
+                                        onClick={() => handleAddToCart( product )}
+                                        disabled={isAddingToCart[product.id]}
+                                    >
+                                        {isAddingToCart[product.id] ? 'Adding to Cart...' : 'Add to Cart'}
+                                    </button>
+                                        </div>
+                                      
                             </li>
                         ) )}
                     </ul>
