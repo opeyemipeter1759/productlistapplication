@@ -1,8 +1,7 @@
-"use client";
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Product from './partials/product';
+import Product from './components/product';
+import { Pagination } from '../components/pagination/pagination';
 
 const ProductList = () =>
 {
@@ -10,12 +9,11 @@ const ProductList = () =>
     const [searchTerm, setSearchTerm] = useState( '' );
     const [filteredProducts, setFilteredProducts] = useState( [] );
     const [currentPage, setCurrentPage] = useState( 1 );
-    const [itemsPerPage] = useState( 8 );
+    const [itemsPerPage, setItemsPerPage] = useState( 8 );
     const [sortOrder, setSortOrder] = useState( '' );
     const [isLoading, setIsLoading] = useState( true );
     const [cartItems, setCartItems] = useState( [] );
     const [isAddingToCart, setIsAddingToCart] = useState( {} );
-    const [showMore, setShowMore] = useState( false )
 
     useEffect( () =>
     {
@@ -111,7 +109,7 @@ const ProductList = () =>
     return (
         <div >
             <h1>Product List</h1>
-            <Product />
+            {/* <Product /> */}
             <div>
                 <input
                     type="text"
@@ -133,45 +131,17 @@ const ProductList = () =>
 
                     <ul className=" grid lg:grid-cols-4 sm:grid-cols-2 gap-4">
                         {currentItems.map( ( product ) => (
-                            <li className="px-7 py-8 bg-white  rounded-2xl	" key={product.id}  >
-                                <div className="w-full flex flex-col h-full ">
-                                    <div className="flex grow flex-col">
-                                        <div className="flex flex-col grow">
-                                            <div className="mx-auto my-0 mb-[10px]">
-                                                <img className=" max-w-full w-full h-[240px] object-contain" src={product.image} alt={product.title} />
-                                            </div>
-                                            <div className="grow mt-2 mb-[10px]">
-                                                <h1 className="text-base font-semibold antialiased mb-[10px]">{product.title}
-                                                    {/* <a className="" onClick={() => setShowMore( !showMore )}>
-                                                        {showMore ? "Show More" : "Show Less"}
-                                                    </a> */}
-                                                </h1>
-                                                <p className="text-sm antialiased text-left mb-[10px]	">
-                                                    {showMore ? product.description : product.description.substring( 0, 50 )}...
-                                                    <a className="" onClick={() => setShowMore( !showMore )}>
-                                                        {showMore ? "Show More" : "Show Less"}
-                                                    </a>
-                                                </p>
-                                                <p className="my-3 font-semibold mb-[10px]">Price: ${product.price}</p>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div className="mt-4 ">
-                                        <button className="   text-base font-normal border-solid border-transparent rounded-xl border-2 py-4 px-7 bg-[#0071e3] w-[100%] min-w-[30px]  text-white	"
-                                            onClick={() => handleAddToCart( product )}
-                                            disabled={isAddingToCart[product.id]}
-                                        >
-                                            {isAddingToCart[product.id] ? 'Adding to Cart...' : 'Add to Cart'}
-                                        </button>
-                                    </div>
-                                </div>
-                            </li>
+                            <Product
+                                product={product}
+                                key={product.id}
+                                handleAddToCart={handleAddToCart}
+                                isAddingToCart={isAddingToCart}
+                            />
                         ) )}
                     </ul>
                     <div>
-                        <button
-                            disabled={currentPage === Math.ceil( filteredProducts.length / itemsPerPage )}
+                        {/* <button 
+                            disabled={currentPage  <=1 }
                             onClick={() => handlePageChange( currentPage - 1 )}
                         >
                             Previous
@@ -182,7 +152,23 @@ const ProductList = () =>
                             onClick={() => handlePageChange( currentPage + 1 )}
                         >
                             Next
-                        </button>
+                            </button> */}
+                            
+                            <Pagination
+                                total={ filteredProducts.length}
+                                perPage={itemsPerPage}
+                                page={currentPage}
+                                pageCount={Math.ceil(filteredProducts.length/itemsPerPage)}
+                                hasPrevPage={currentPage > 1}
+                                hasNextPage={currentPage + 1 <= Math.ceil( filteredProducts.length / itemsPerPage )}
+                                previousPage={currentPage - 1}
+                                nextPage={currentPage + 1}
+                                refresh={({page, perPage}) =>
+                                {
+                                    handlePageChange( page || 1 )
+                                    setItemsPerPage(perPage==="all" ? filteredProducts.length: perPage)
+                                }}
+                            />
                     </div>
                 </div>
             )}
