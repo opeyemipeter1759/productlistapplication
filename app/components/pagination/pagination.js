@@ -38,7 +38,7 @@ export const Pagination = ( props ) =>
 
     return (
         <div className="flex justify-around items-center my-5">
-            <div className=" text-base  font-normal">
+            <div className=" text-base  font-normal ">
                 <span className="text-[#6d7a98] text-base" >Showing</span> Page {page} of {pageCount}
             </div>
 
