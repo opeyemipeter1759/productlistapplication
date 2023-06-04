@@ -1,39 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Product from './components/product';
 import { Pagination } from '../components/pagination/pagination';
+import useProduct from '../hooks/useProduct';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+
 
 const ProductList = () =>
 {
-    const [products, setProducts] = useState( [] );
     const [searchTerm, setSearchTerm] = useState( '' );
     const [filteredProducts, setFilteredProducts] = useState( [] );
     const [currentPage, setCurrentPage] = useState( 1 );
     const [itemsPerPage, setItemsPerPage] = useState( 8 );
     const [sortOrder, setSortOrder] = useState( '' );
-    const [isLoading, setIsLoading] = useState( true );
     const [cartItems, setCartItems] = useState( [] );
     const [isAddingToCart, setIsAddingToCart] = useState( {} );
+    const { products, isLoading } = useProduct();
 
-    useEffect( () =>
-    {
-        const fetchData = async () =>
-        {
-            setIsLoading( true );
-            try
-            {
-                const response = await axios.get( 'https://fakestoreapi.com/products' );
-                setProducts( response.data );
-                setIsLoading( false );
-            } catch ( error )
-            {
-                console.error( error );
-                setIsLoading( false );
-            }
-        };
-
-        fetchData();
-    }, [] );
 
     useEffect( () =>
     {
@@ -110,18 +93,36 @@ const ProductList = () =>
         <div >
             <h1>Product List</h1>
             {/* <Product /> */}
-            <div>
-                <input
-                    type="text"
-                    placeholder="Search products..."
-                    value={searchTerm}
-                    onChange={handleSearch}
-                />
-                <select value={sortOrder} onChange={handleSort}>
-                    <option value="">Sort by Price</option>
-                    <option value="asc">Low to High</option>
-                    <option value="desc">High to Low</option>
-                </select>
+            <div className="flex justify-between py-5"> 
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                    />
+                    <select value={sortOrder} onChange={handleSort}>
+                        <option value="">Sort by Price</option>
+                        <option value="asc">Low to High</option>
+                        <option value="desc">High to Low</option>
+                    </select>
+                </div>
+   
+            
+                <button
+                    className="flex items-center relative focus:outline-none"
+                    onClick={() => handleCartButtonClick()}
+                >
+                    {cartItemCount > 0 && (
+                        <span className="bg-red-500 text-white px-2 py-1 rounded-full text-sm absolute -top-[4px] xs:-top-[17px] right-0">
+                            {cartItemCount}
+                        </span>
+                    )}
+                    <FontAwesomeIcon icon={faShoppingCart} className="mr-2 text-3xl" />
+                   
+                </button>
+
+
             </div>
             {isLoading ? (
                 <p>Loading...</p>
@@ -140,19 +141,6 @@ const ProductList = () =>
                         ) )}
                     </ul>
                     <div>
-                        {/* <button 
-                            disabled={currentPage  <=1 }
-                            onClick={() => handlePageChange( currentPage - 1 )}
-                        >
-                            Previous
-                        </button>
-                        <span>{currentPage}</span>
-                        <button
-                            disabled={indexOfLastItem >= filteredProducts.length}
-                            onClick={() => handlePageChange( currentPage + 1 )}
-                        >
-                            Next
-                            </button> */}
                             
                             <Pagination
                                 total={ filteredProducts.length}
