@@ -22,31 +22,9 @@ const ProductList = () =>
     const [isCartOpen, setIsCartOpen] = useState( false );
     const [isAddingToCart, setIsAddingToCart] = useState( {} );
     const { products, isLoading } = useProduct();
-    const [showCartPage, setShowCartPage] = useState( false );
 
 
 
-
-    const handleCartButtonClick = () =>
-    {
-        setIsCartOpen( true );
-    };
-
-    const handleHideCart = () =>
-    {
-        setIsCartOpen( false );
-    };
-
-    const handleShowCartPage = () =>
-    {
-        setShowCartPage( true );
-    };
-
-    const handleHideCartPage = () =>
-    {
-        setShowCartPage( false );
-    };
-    
 
     useEffect( () =>
     {
@@ -112,6 +90,9 @@ const ProductList = () =>
             [product.id]: false
         } ) );
     };
+
+
+
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredProducts.slice( indexOfFirstItem, indexOfLastItem );

@@ -8,7 +8,8 @@ export const StateContext = createContext();
 const StateProvider = ( { children } ) =>
 {
     const persistKey = "app state"
-    const [cartItems, setCartItems] = useState( JSON.parse( localStorage[persistKey] || "[]" ) );
+    const isBrowser = typeof window !== 'undefined';
+    const [cartItems, setCartItems] = useState( isBrowser ? JSON.parse( localStorage[persistKey] || "[]" ) : [] );
 
     useEffect( () =>
     {

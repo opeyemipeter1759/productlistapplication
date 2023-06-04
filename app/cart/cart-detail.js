@@ -1,7 +1,7 @@
 import React from 'react';
-const CartDetail = ( { cartItems, cartTotalPrice } ) =>
+const CartDetail = ( { cartItems, cartTotalPrice, handleRemoveFromCart } ) =>
 {
-    
+
     return (
         <div className=" conatiner mx-auto">
             <div className="bg-white rounded-lg p-8  w-full">
@@ -14,20 +14,26 @@ const CartDetail = ( { cartItems, cartTotalPrice } ) =>
             {cartItems.length > 0 ? (
                 <>
                     <ul className="divide-y divide-gray-200">
-                        {cartItems.map( ( item ) => (
-                            <li key={item.id} className="py-2">
-                                <div className="flex items-center">
-                                    <img src={item.image} alt={item.title} className="w-12 h-12 mr-4" />
-                                    <div>
-                                        <p className="text-lg font-medium">{item.title}</p>
-                                        <p className="text-gray-500">${item.price}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center mt-2">
-                                    <p className="mr-4">Quantity: {item.quantity}</p>
-                                    <p className="text-gray-500">Total: ${item.price * item.quantity}</p>
-                                </div>
-                            </li>
+                            {cartItems.map( ( item) => (
+                                <>
+                                    <li key={item.id} className="py-2">
+                                        <div className="flex items-center">
+                                            <img src={item.image} alt={item.title} className="w-12 h-12 mr-4" />
+                                            <div>
+                                                <p className="text-lg font-medium">{item.title}</p>
+                                                <p className="text-gray-500">${item.price}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center mt-2">
+                                            <p className="mr-4">Quantity: {item.quantity}</p>
+                                            <p className="text-gray-500">Total: ${item.price * item.quantity}</p>
+                                        </div>
+                                    </li>
+                                    <button onClick={() => handleRemoveFromCart( item.id )}>Remove</button>
+
+                                </>
+                   
+                            
                         ) )}
                     </ul>
 
