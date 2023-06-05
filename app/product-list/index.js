@@ -103,7 +103,7 @@ const ProductList = () =>
     return (
         <div >
             <div className="flex justify-end gap-4 py-5"> 
-                    <div className="flex w-full items-center py-2  px-5 bg-white rounded xxs:w-[70%] md:w-[30%]">
+                    <div className="flex w-full items-center py-2  px-5 bg-white rounded xxs:w-[90%] md:w-[30%]">
                         <FontAwesomeIcon icon={faSearch} className="mr-2 text-xl" />
                     <input
                         type="text"
