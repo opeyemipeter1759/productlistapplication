@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
-import CartDetail from '../cart/cart-detail';
 import { StateContext } from '../state/state';
 import Link from 'next/link';
 
