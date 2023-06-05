@@ -1,12 +1,16 @@
 import Link from 'next/link'
 import '../styles.scss'
 import './globals.css'
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { config } from '@fortawesome/fontawesome-svg-core';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faLaptopCode } from '@fortawesome/free-solid-svg-icons';
 
-import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+
+config.autoAddCss = false; /* eslint-disable import/first */
+
 
 export const metadata = {
   title: 'Product list',
@@ -19,7 +23,7 @@ export default function RootLayout({ children }) {
           <body className="container mx-auto my-7 ">
               <div>
               <Link href="/" className='text-4xl'>
-                  <FontAwesomeIcon  icon={faLaptopCode} /> Home
+                      <FontAwesomeIcon className='text-2xl font-normal	' icon={faLaptopCode} /> Home
               </Link>
               </div>
               {children}

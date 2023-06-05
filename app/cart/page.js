@@ -40,7 +40,6 @@ const Cart = () =>
         <>
             {/* Render the CartDetail component */}
             <CartDetail cartItems={cartItems} cartTotalPrice={cartTotalPrice.toFixed( 2 )} handleRemoveFromCart={handleRemoveFromCart} />
-            
             {/* Render the confirmation modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
