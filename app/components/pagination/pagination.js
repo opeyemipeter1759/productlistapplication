@@ -42,7 +42,7 @@ export const Pagination = ( props ) =>
                 <span className="text-[#6d7a98] text-base" >Showing</span> Page {page} of {pageCount}
             </div>
 
-            <div className="flex items-center text-base  font-normal">
+            <div className="flex items-center text-base  font-normal md:block xxs:hidden">
                 <span>Items per page: </span>
                     <select onChange={handlePerPageSelect}  className="p-2 flex items-center justify-betwen bg-[#fff] rounded w-full outline-none">
                         <option selected value="8">8</option>

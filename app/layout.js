@@ -1,5 +1,8 @@
+import Link from 'next/link'
 import '../styles.scss'
 import './globals.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {  faLaptopCode } from '@fortawesome/free-solid-svg-icons';
 
 import { Inter } from 'next/font/google'
 
@@ -13,8 +16,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
       <html lang="en">
+          <body className="container mx-auto my-7 ">
+              <div>
+              <Link href="/" className='text-4xl'>
+                  <FontAwesomeIcon  icon={faLaptopCode} /> Home
+              </Link>
+              </div>
+              {children}
           
-      <body className={inter.className}>{children}</body>
+          </body>
     </html>
   )
 }

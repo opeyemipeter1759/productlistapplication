@@ -102,8 +102,7 @@ const ProductList = () =>
   
     return (
         <div >
-            <h1>Product List</h1>
-            <div className="flex justify-between py-5"> 
+            <div className="flex justify-end gap-4 py-5"> 
                     <div className="flex w-full items-center py-2  px-5 bg-white rounded xxs:w-[70%] md:w-[30%]">
                         <FontAwesomeIcon icon={faSearch} className="mr-2 text-xl" />
                     <input
@@ -115,14 +114,16 @@ const ProductList = () =>
                     />
                     </div>
             
-                <Link 
+                <Link
                     className="flex items-center relative focus:outline-none"
                     href="/cart"
                 >
                     {cartItemCount > 0 && (
+                        <div>
                         <span className="bg-red-500 text-white px-2 py-1 rounded-full text-sm absolute -top-[4px] xs:-top-[0px] right-0">
                             {cartItemCount}
                         </span>
+                        </div>
                     )}
                     <FontAwesomeIcon icon={faShoppingCart} className="mr-2 text-3xl" />
                    
@@ -137,13 +138,17 @@ const ProductList = () =>
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
-                <div className="">
-
-                        <select value={sortOrder} onChange={handleSort}>
+                    <div >
+                        <div className="flex justify-end">
+                        <div className="h-fit-content w-[240px] border-[#c9c9c9] bg-white mb-4" >
+                        <select value={sortOrder} onChange={handleSort} className="px-[2rem] py-[1rem]  outline-transparent text-base bg-white	">
                             <option value="">Sort by Price</option>
                             <option value="asc">Low to High</option>
                             <option value="desc">High to Low</option>
-                        </select>
+                            </select>
+                        </div>
+
+                        </div>
                     <ul className=" grid lg:grid-cols-4 sm:grid-cols-2 gap-4">
                         {currentItems.map( ( product ) => (
                             <Product
