@@ -1,3 +1,5 @@
+//This component renders a list of products with pagination and search functionality.
+
 import React, { useEffect, useState, useContext } from 'react';
 import Product from './components/product';
 import { Pagination } from '../components/pagination/pagination';
@@ -13,19 +15,21 @@ import Link from 'next/link';
 
 const ProductList = () =>
 {
+    // State variables
     const [searchTerm, setSearchTerm] = useState( '' );
     const [filteredProducts, setFilteredProducts] = useState( [] );
     const [currentPage, setCurrentPage] = useState( 1 );
     const [itemsPerPage, setItemsPerPage] = useState( 8 );
     const [sortOrder, setSortOrder] = useState( '' );
     const { cartItems, setCartItems } = useContext( StateContext );
-    const [isCartOpen, setIsCartOpen] = useState( false );
     const [isAddingToCart, setIsAddingToCart] = useState( {} );
+
+    // Fetching products using the useProduct hook
     const { products, isLoading } = useProduct();
 
 
 
-
+// Effect for filtering products based on the search term
     useEffect( () =>
     {
         const filtered = products.filter( ( product ) =>
@@ -35,6 +39,7 @@ const ProductList = () =>
         setCurrentPage( 1 );
     }, [products, searchTerm] );
 
+    // Effect for sorting products based on the sort order
     useEffect( () =>
     {
         const sorted = [...filteredProducts].sort( ( a, b ) =>
@@ -52,21 +57,28 @@ const ProductList = () =>
         setCurrentPage( 1 );
     }, [sortOrder] );
 
+
+// Event handler for search input
     const handleSearch = ( event ) =>
     {
         setSearchTerm( event.target.value );
     };
 
+
+    // Event handler for sorting select input
     const handleSort = ( event ) =>
     {
         setSortOrder( event.target.value );
     };
 
+    // Event handler for page change
     const handlePageChange = ( page ) =>
     {
         setCurrentPage( page );
     };
 
+
+    // Event handler for adding a product to the cart
     const handleAddToCart = async ( product ) =>
     {
         setIsAddingToCart( ( prevState ) => ( {
@@ -92,7 +104,7 @@ const ProductList = () =>
     };
 
 
-
+// Pagination calculations
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredProducts.slice( indexOfFirstItem, indexOfLastItem );
@@ -131,9 +143,7 @@ const ProductList = () =>
 
 
             </div>
-            {isCartOpen && (
-                <CartDetail cartItems={cartItems} handleHideCart={handleHideCart} cartTotalPrice={cartTotalPrice.toFixed( 2 )} />
-            )}     
+             
 
             {isLoading ? (
                 <p>Loading...</p>

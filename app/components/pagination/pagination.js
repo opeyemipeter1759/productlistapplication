@@ -12,7 +12,8 @@ export const Pagination = ( props ) =>
         previousPage = null,
         nextPage = null,
     } = props;
-    console.log(props);
+
+    // If total is less than 9, return null (no pagination needed)
     if ( total < 9 )
     {
         return null;
@@ -20,9 +21,9 @@ export const Pagination = ( props ) =>
 
     const {
         refresh = () => { },
-        perPageItems = ['10', '100', '1000', 'all'],
     } = props;
 
+      // Handle the selection of items per page
     const handlePerPageSelect = ( event) =>
     {
         const value = event.target.value;
@@ -52,7 +53,7 @@ export const Pagination = ( props ) =>
                         <option value="all">all</option>
                     </select>
             </div>
-
+            {/* Render the "Prev" button */}
             <div className="flex items-center px-2 gap-3">
                 <button
                     disabled={!hasPrevPage}
@@ -61,6 +62,8 @@ export const Pagination = ( props ) =>
                 >
                     Prev
                 </button>
+
+                {/* Render the first page button */}
                 <button
                     onClick={() => refresh( { page: 1, perPage } )}
                     disabled={page === 1}
@@ -68,32 +71,49 @@ export const Pagination = ( props ) =>
                 >
                     1
                 </button>
+
+                {/* Render ellipsis if there are more pages */}
                 {page - 3 > 0 && <button>...</button>}
+
+                {/* Render the page button before the last page */}
                 {page === pageCount && pageCount > 3 && (
                     <button onClick={() => refresh( { page: page - 2, perPage } )}>
                         {page - 2}
                     </button>
                 )}
+
+
+                {/* Render the page button two positions before the current page */}
                 {page - 2 > 0 && page !== pageCount - 2 && (
                     <button onClick={() => refresh( { page: page - 1, perPage } )}>
                         {page - 1}
                     </button>
                 )}
+
+                {/* Render the current page button */}
                 {page - 1 > 0 && page + 1 <= pageCount && (
                     <button
                     className="text-[#0071e3] bg-[#fff] text-base px-2"
                     
                         disabled>{page}</button>
                 )}
+
+                {/* Render the page button after the current page */}
                 {page + 2 <= pageCount && page !== 3 && (
                     <button onClick={() => refresh( { page: page + 1, perPage } )}>
                         {page + 1}
                     </button>
                 )}
+
+                {/* Render the page 3 button if the current page is 1 */}
                 {page === 1 && pageCount > 3 && (
                     <button onClick={() => refresh( { page: 3, perPage } )}>3</button>
                 )}
+
+                {/* Render ellipsis if there are more pages */}
                 {page + 3 <= pageCount && <button>...</button>}
+
+                {/* Render the last page button */}
                 {pageCount !== 1 && (
                     <button
                         onClick={() => refresh( { page: pageCount, perPage } )}
@@ -103,6 +123,8 @@ export const Pagination = ( props ) =>
                         {pageCount}
                     </button>
                 )}
+
+                {/* Render the "Next" button */}
                 <button
                     className="text-[#6d7a98] text-base cursor-pointer"
                     onClick={() => refresh( { page: nextPage, perPage } )}

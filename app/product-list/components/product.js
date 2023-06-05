@@ -1,9 +1,12 @@
+//This component represents an individual product item.
+
 import React, { useState } from 'react'
 import Button from '@/app/components/button/button'
 
 
 const Product = ( props ) =>
 {
+    // State variable for "Show More" toggle
     const [showMore, setShowMore] = useState( false )
     const {product} = props
   return (

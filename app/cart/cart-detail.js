@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 const CartDetail = ( { cartItems, cartTotalPrice, handleRemoveFromCart } ) =>
 {
+  // Render the cart items if the cart is not empty
+  // Otherwise, display a message indicating an empty cart
     return (
         <div className="container mx-auto mt-5">
             <div className="bg-white rounded-lg p-8 w-full">

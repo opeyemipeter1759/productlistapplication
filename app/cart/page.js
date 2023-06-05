@@ -1,23 +1,4 @@
 "use client"
-// import React, { useContext } from 'react'
-// import CartDetail from './cart-detail';
-// import { StateContext } from '../state/state';
-
-// const Cart = ({}) =>
-// {
-//     const { cartItems, setCartItems } = useContext( StateContext );
-//     const cartTotalPrice = cartItems.reduce( ( total, item ) => total + item.price, 0 );
-//     const handleRemoveFromCart = ( productId ) =>
-//     {
-//         const updatedCartItems = cartItems.filter( ( item ) => item.id !== productId );
-//         setCartItems( updatedCartItems );
-//     };
-
-//     return <CartDetail cartItems={cartItems} cartTotalPrice={cartTotalPrice.toFixed( 2 )} handleRemoveFromCart={handleRemoveFromCart} />;
-
-// }
-
-// export default Cart
 
 import React, { useContext, useState } from 'react';
 import CartDetail from './cart-detail';
@@ -25,18 +6,23 @@ import { StateContext } from '../state/state';
 
 const Cart = () =>
 {
+      // Retrieve cart items and setCartItems from the StateContext
+
     const { cartItems, setCartItems } = useContext( StateContext );
     const [isModalOpen, setIsModalOpen] = useState( false );
     const [productIdToRemove, setProductIdToRemove] = useState( '' );
 
+      // Calculate the total price of the cart items
     const cartTotalPrice = cartItems.reduce( ( total, item ) => total + item.price, 0 );
 
+      // Handle the removal of an item from the cart
     const handleRemoveFromCart = ( productId ) =>
     {
         setProductIdToRemove( productId );
         setIsModalOpen( true );
     };
 
+      // Handle the confirmation of item removal
     const handleConfirmation = () =>
     {
         const updatedCartItems = cartItems.filter( ( item ) => item.id !== productIdToRemove );
@@ -44,6 +30,7 @@ const Cart = () =>
         setIsModalOpen( false );
     };
 
+      // Handle canceling item removal
     const handleCancel = () =>
     {
         setIsModalOpen( false );
@@ -51,7 +38,10 @@ const Cart = () =>
 
     return (
         <>
+            {/* Render the CartDetail component */}
             <CartDetail cartItems={cartItems} cartTotalPrice={cartTotalPrice.toFixed( 2 )} handleRemoveFromCart={handleRemoveFromCart} />
+            
+            {/* Render the confirmation modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
                     <div className="bg-white rounded-lg p-8">

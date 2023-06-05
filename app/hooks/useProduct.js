@@ -3,17 +3,20 @@ import axios from 'axios';
 
 const useProduct = () =>
 {
+      // State variables for storing products and loading status
     const [products, setProducts] = useState( [] );
     const [isLoading, setIsLoading] = useState( true );
 
 
     useEffect( () =>
     {
+            // Function to fetch data from the API
         const fetchData = async () =>
         {
             setIsLoading( true );
             try
             {
+                 // Make API request to retrieve products
                 const response = await axios.get( 'https://fakestoreapi.com/products' );
                 setProducts( response.data );
                 setIsLoading( false );
@@ -24,12 +27,13 @@ const useProduct = () =>
             }
         };
 
-        fetchData();
+        //fetchData();Call the fetchData function when the component mounts
+        fetchData(); 
     }, [] );
 
     return {
-        products,
-        isLoading
+        products, //return the products state
+        isLoading // return the loading state
   }
 }
 

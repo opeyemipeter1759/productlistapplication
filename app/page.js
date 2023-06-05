@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Productlist from "./product-list";
+import Productlist from "./product-list/index";
 
 const Home = () =>
 {
